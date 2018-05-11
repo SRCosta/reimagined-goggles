@@ -1,2 +1,2 @@
 # reimagined-goggles
-Repository for URI Big Data Repository 4
+Repository for URI Big Data Homework 4
