@@ -1,5 +1,9 @@
 ```python
 # This code has been designed to test the Seq class via pytest
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
 # Seq object Class
 class Seq:
     def __init__(self,DNAsequence):
