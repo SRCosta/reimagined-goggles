@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import glob
 %matplotlib inline
 
 class Seq:
@@ -91,4 +92,66 @@ class Seq:
         observed_possible = data_frame.iloc[-1,2]
         linguistic_complexity = observed_total/observed_possible
         return linguistic_complexity
+        
+if __name__ = '__main__':
+	for filename in glob.glob('*fasta'):
+    f = open(filename,'r')
+    fasta = f.readlines()
+    for line_number,line in enumerate(fasta):
+        line = line.rstrip()
+        if line_number%3 == 0:
+            seq_line_num = line_number + 1
+            for line_number,line in enumerate(fasta):
+                if line_number == seq_line_num:
+                    seq_string = str(line)
+                    seq_obj = Seq(seq_string)
+                    seq_obj_pandas = seq_obj.get_pandas()
+                    seq_obj_graph = seq_obj.graph_pandas(seq_obj_pandas)
+                    seq_obj_lingcomp = seq_obj.ling_comp(seq_obj_pandas)
+                    ssol = str(seq_obj_lingcomp)
+                        return seq_obj_pandas
+                        return seq_obj_graph
+                    print(ssol)
+
+```
+I had attempted to code the main function so that it would create a directory for each DNA sequence, and store in it a pandas table (as .csv file), graph (as a .png file), and a .txt file (containg the value of the linguistic complexity as a string). Unfortunatly, I was unable to complete this version of the function; my unfinished function is as follows:
+
+```python
+if __name__ = '__main__':
+    for filename in glob.glob('*fasta'):
+    f = open(filename,'r')
+    fasta = f.readlines()
+    for line_number,line in enumerate(fasta):
+        line = line.rstrip()
+        if line_number%3 == 0:
+            dirpath = os.path.join('./', line[1:])
+            try:
+                os.mkdir(dirpath)
+            except FileExistsError:
+                print('Directory {} already exists'.format(dirpath))
+            else:
+                print('Directory {} created'.format(dirpath))
+            seq_line_num = line_number + 1
+            for line_number,line in enumerate(fasta):
+                if line_number == seq_line_num:
+                    seq_string = str(line)
+                    seq_obj = Seq(seq_string)
+                    seq_obj_pandas = seq_obj.get_pandas()
+                    seq_obj_graph = seq_obj.graph_pandas(seq_obj_pandas)
+                    seq_obj_lingcomp = seq_obj.ling_comp(seq_obj_pandas)
+                    newFile_pandas = dirpath +'/Seq_pandas.csv'
+                    if not os.path.exists(os.path.dirname(newFile_pandas)):
+                        os.makedirs(os.path.dirname(newFile_pandas))
+                    newFile_graph = dirpath + '/Seq_graph.png'
+                    if not os.path.exists(os.path.dirname(newFile_graph)):
+                        os.makedirs(os.path.dirname(newFile_graph))
+                    newFile_lingcomp = dirpath + '/Seq_lingcomp.txt'
+                    if not os.path.exists(os.path.dirname(newFile_lingcomp)):
+                        os.makedirs(os.path.dirname(newFile_lingcomp))
+                    seq_obj_pandas.to_csv(newFile_pandas)
+                    seq_obj_graph.figure.savefig(newFile_graph)
+                    with open(newFile, 'a') as foo:
+                        foo.write('\nLinguistic Composition')
+                        ssol = str(seq_obj_lingcomp)
+                        foo.write(ssol)
 ```
